@@ -62,46 +62,58 @@ export function App() {
 
 You can retrieve available camera devices using `getCameras()` and feed the selected `deviceId` directly into the component:
 
+When building a custom camera selector, ensure camera enumeration completes before mounting the `<WasmQrScanner />` component. This prevents hardware lock contention on devices where concurrent video stream access is restricted.
+
 ```tsx
 import { useEffect, useState } from "react";
-import { WasmQrScanner, getCameras, CameraDevice } from "react-wasm-qr-scanner";
+import { WasmQrScanner, getCameras, type CameraDevice } from "react-wasm-qr-scanner";
 
-export default function App() {
+export default function CustomScannerApp() {
   const [cameras, setCameras] = useState<CameraDevice[]>([]);
   const [selectedDeviceId, setSelectedDeviceId] = useState<string>("");
+  const [isReady, setIsReady] = useState<boolean>(false);
 
   useEffect(() => {
-    getCameras().then((devices) => {
-      setCameras(devices);
-      if (devices.length > 0) {
-        setSelectedDeviceId(devices[0].deviceId);
+    async function initCameras() {
+      try {
+        const devices = await getCameras();
+        setCameras(devices);
+        if (devices.length > 0) {
+          setSelectedDeviceId(devices[0].deviceId);
+        }
+      } catch (err) {
+        console.error("Failed to load cameras:", err);
+      } finally {
+        // Mount scanner only after device enumeration releases the hardware
+        setIsReady(true);
       }
-    });
+    }
+
+    initCameras();
   }, []);
 
   return (
     <div>
+      {/* Camera Selector Dropdown */}
       <select 
         value={selectedDeviceId} 
         onChange={(e) => setSelectedDeviceId(e.target.value)}
       >
         {cameras.map((cam) => (
           <option key={cam.deviceId} value={cam.deviceId}>
-            {cam.label}
+            {cam.label || `Camera (${cam.deviceId.slice(0, 6)}...)`}
           </option>
         ))}
       </select>
 
-      <WasmQrScanner 
-        selectedDeviceId={selectedDeviceId}
-        scan="flow" 
-        scanIntervalMs={150} 
-        onDataRead={(data) => console.log("Scanned QR:", data)}
-      />
+      {/* Render Scanner only when enumeration finishes */}
+      {isReady && (
+        <WasmQrScanner onDataRead="{(data)" scan="flow" scanIntervalMs="{150}" selectedDeviceId="{selectedDeviceId}"> console.log("Scanned QR:", data)}
+        />
+      )}
     </div>
   );
 }
-```
 
 ### 4. Custom CSS and Classes
 
@@ -122,6 +134,30 @@ To style each part you can use the props to pass your classes or pure CSS, the p
   shutterCssStyle={{ border: "3px solid #00E5FF", borderRadius: "24px" }}
 />
 ```
+#### Default CSS values
+| Part | CSS | Default |
+| :--- | :--- | :--- |
+| `container` | `position` | `relative` |
+| `container` | `width` | `100%` |
+| `container` | `height` | `100%` |
+| `container` | `backgroundColor` | `none` |
+| `container` | `overflow` | `hidden` |
+| `video` | `width` | `100%` |
+| `video` | `height` | `100%` |
+| `video` | `objectFit` | `contain` |
+| `video` | `display` | `block` |
+| `shutter` | `position` | `absolute` |
+| `shutter` | `top` | `50%` |
+| `shutter` | `left` | `50%` |
+| `shutter` | `transform` | `translate(-50%, -50%)` |
+| `shutter` | `width` | `100%` |
+| `shutter` | `maxWidth` | `200px` |
+| `shutter` | `aspectRatio` | `1 / 1` |
+| `shutter` | `border` | `2px solid red` |
+| `shutter` | `borderRadius` | `12px` |
+| `shutter` | `boxShadow` | `0 0 0 4000px rgba(0, 0, 0, 0.4)` |
+| `shutter` | `pointerEvents` | `none` |
+
 
 ### 5. Choose Scan Working Flow
 

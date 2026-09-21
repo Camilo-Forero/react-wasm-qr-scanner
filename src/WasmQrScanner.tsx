@@ -232,7 +232,7 @@ export function WasmQrScanner({
     position: "relative",
     width: "100%",
     height: "100%",
-    backgroundColor: "#000",
+    backgroundColor: "none",
     overflow: "hidden",
   };
 
@@ -248,9 +248,10 @@ export function WasmQrScanner({
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: "220px",
-    height: "220px",
-    border: "3px solid #00FF00",
+    width: "100%",
+    maxWidth: "200px",
+    aspectRatio: "1 / 1",
+    border: "2px solid red",
     borderRadius: "12px",
     boxShadow: "0 0 0 4000px rgba(0, 0, 0, 0.4)",
     pointerEvents: "none",
