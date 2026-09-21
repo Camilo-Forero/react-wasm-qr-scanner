@@ -1,6 +1,6 @@
 {
   "name": "react-wasm-qr-scanner",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A high-performance React QR scanner component powered by zxing-wasm",
   "type": "module",
   "main": "./dist/index.js",
