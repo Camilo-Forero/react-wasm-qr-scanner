@@ -107,7 +107,7 @@ export default function App() {
 
 The library got 3 parts that you can style to your needs, the parts are: `container`, `video` and `shutter`.
 
-To style each part you can use the props to pass your classes or pure CSS, the props are: `containerClassName`, `containerCssStyle`, `videoClassName`, `videoCssStyle`, `shutterClassName`, `shutterCssStyle`, by default the library got some styles but you can ovewrite it.
+To style each part you can use the props to pass your classes or pure CSS, the props are: `containerClassName`, `containerCssStyle`, `videoClassName`, `videoCssStyle`, `shutterClassName`, `shutterCssStyle`, by default the library got some styles but you can overwrite it.
 
 ```tsx
 <WasmQrScanner
@@ -123,6 +123,28 @@ To style each part you can use the props to pass your classes or pure CSS, the p
 />
 ```
 
+### 5. Choose Scan Working Flow
+
+The scanner can work in two ways, whe you use the prop `scan` you can choose between `once` or `flow`. By defualt is `once`
+
+When you choose `once` the scanner is going to scan the first QR it found and if is a valid QR is going to stop.
+
+When you choose `flow` the scanner is going to continiously scan valid QRs without stoping, so you need to use the prop `scanIntervalMs` to set in miliseconds to set the cycles of reading. (ex: 300 would scan in intervals of 300 miliseconds). By default is set to 100.
+
+```tsx
+// Single scan (stops after first read)
+<WasmQrScanner
+  scan="once"
+  onDataRead={(qrCode) => console.log("Single QR Read:", qrCode)}
+/>
+
+// Continuous scanning (keeps scanning indefinitely)
+<WasmQrScanner
+  scan="flow"
+  scanIntervalMs={150}
+  onDataRead={(qrCode) => console.log("Streamed QR Read:", qrCode)}
+/>
+```
 
 ---
 
