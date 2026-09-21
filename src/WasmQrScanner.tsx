@@ -231,7 +231,7 @@ export function WasmQrScanner({
   const defaultContainerStyle: CSSProperties = {
     position: "relative",
     width: "100%",
-    height: "320px",
+    height: "100%",
     backgroundColor: "#000",
     overflow: "hidden",
   };

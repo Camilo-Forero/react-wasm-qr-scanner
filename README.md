@@ -43,7 +43,22 @@ export default function App() {
 }
 ```
 
-### 2. Custom Camera Selector
+### 2. Basic Scanner (Select Default Camera)
+
+```tsx
+import { WasmQrScanner } from "react-wasm-qr-scanner";
+
+export function App() {
+  return (
+    <WasmQrScanner
+      selectCam="back" // or "front"
+      onDataRead={(data) => console.log("QR Code:", data)}
+    />
+  );
+}
+```
+
+### 3. Custom Camera Selector
 
 You can retrieve available camera devices using `getCameras()` and feed the selected `deviceId` directly into the component:
 
@@ -87,6 +102,27 @@ export default function App() {
   );
 }
 ```
+
+### 4. Custom CSS and Classes
+
+The library got 3 parts that you can style to your needs, the parts are: `container`, `video` and `shutter`.
+
+To style each part you can use the props to pass your classes or pure CSS, the props are: `containerClassName`, `containerCssStyle`, `videoClassName`, `videoCssStyle`, `shutterClassName`, `shutterCssStyle`, by default the library got some styles but you can ovewrite it.
+
+```tsx
+<WasmQrScanner
+  onDataRead={(data) => console.log(data)}
+  
+  // Custom Tailwind / CSS classes
+  containerClassName="rounded-xl shadow-2xl"
+  shutterClassName="animate-pulse"
+  
+  // Directly overriding inline CSS styles
+  containerCssStyle={{ height: "450px" }}
+  shutterCssStyle={{ border: "3px solid #00E5FF", borderRadius: "24px" }}
+/>
+```
+
 
 ---
 
