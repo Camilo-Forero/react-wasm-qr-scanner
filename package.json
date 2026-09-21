@@ -1,0 +1,47 @@
+{
+  "name": "react-wasm-qr-scanner",
+  "version": "1.0.0",
+  "description": "A high-performance React QR scanner component powered by zxing-wasm",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc --noEmit && vite build"
+  },
+  "peerDependencies": {
+    "react": ">=16.8.0",
+    "react-dom": ">=16.8.0"
+  },
+  "dependencies": {
+    "zxing-wasm": "^1.2.0"
+  },
+  "keywords": [
+    "react",
+    "qr-code",
+    "qr-scanner",
+    "wasm",
+    "zxing-wasm",
+    "webrtc"
+  ],
+  "devDependencies": {
+    "@types/node": "^26.6.1",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@typescript/typescript6": "^6.0.2",
+    "@vitejs/plugin-react": "^6.1.1",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.0",
+    "vite-plugin-dts": "^5.1.0"
+  }
+}

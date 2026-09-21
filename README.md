@@ -1,2 +1,130 @@
 # react-wasm-qr-scanner
-A lightweight, high-performance React QR code scanner library powered by zxing-wasm
+
+A lightweight, high-performance React QR code scanner library powered by [`zxing-wasm`](https://github.com/zxing-js/zxing-wasm). 
+
+Offers full UI flexibility by decoupling camera selection, enabling custom element styling, and providing both single-shot and continuous scanning modes.
+
+---
+
+## Features
+
+- **WASM-Powered**: Extremely fast and accurate QR decoding via WebAssembly.
+- **Decoupled Camera Logic**: Exported `getCameras()` utility so you can build your own camera selector.
+- **Flexible Camera Selection**: Target cameras via explicit `deviceId` or simply force `"back"` / `"front"` cameras.
+- **Scan Modes**: Support for single detection (`"once"`) or continuous streaming (`"flow"`).
+- **Fully Customizable Styling**: Fine-grained `className` and `style` props for the container, video feed, and shutter overlay.
+- **TypeScript First**: Full type definitions included.
+
+---
+
+## Installation
+
+```bash
+npm install react-wasm-qr-scanner
+```
+
+---
+
+## Quick Start
+
+### 1. Basic Scanner (Default Back Camera)
+
+```tsx
+import { WasmQrScanner } from "react-wasm-qr-scanner";
+
+export default function App() {
+  const handleScan = (qrValue: string) => {
+    console.log("Decoded QR Code:", qrValue);
+  };
+
+  return (
+    <WasmQrScanner onDataRead={handleScan} scan="once" />
+  );
+}
+```
+
+### 2. Custom Camera Selector
+
+You can retrieve available camera devices using `getCameras()` and feed the selected `deviceId` directly into the component:
+
+```tsx
+import { useEffect, useState } from "react";
+import { WasmQrScanner, getCameras, CameraDevice } from "react-wasm-qr-scanner";
+
+export default function App() {
+  const [cameras, setCameras] = useState<CameraDevice[]>([]);
+  const [selectedDeviceId, setSelectedDeviceId] = useState<string>("");
+
+  useEffect(() => {
+    getCameras().then((devices) => {
+      setCameras(devices);
+      if (devices.length > 0) {
+        setSelectedDeviceId(devices[0].deviceId);
+      }
+    });
+  }, []);
+
+  return (
+    <div>
+      <select 
+        value={selectedDeviceId} 
+        onChange={(e) => setSelectedDeviceId(e.target.value)}
+      >
+        {cameras.map((cam) => (
+          <option key={cam.deviceId} value={cam.deviceId}>
+            {cam.label}
+          </option>
+        ))}
+      </select>
+
+      <WasmQrScanner 
+        selectedDeviceId={selectedDeviceId}
+        scan="flow" 
+        scanIntervalMs={150} 
+        onDataRead={(data) => console.log("Scanned QR:", data)}
+      />
+    </div>
+  );
+}
+```
+
+---
+
+## API Reference
+
+### `WasmQrScanner` Props
+
+| Prop | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `onDataRead` | `(qrValue: string) => void` | **Required** | Callback function executed when a valid QR code is decoded. |
+| `selectedDeviceId` | `string` | `undefined` | Specific camera `deviceId` to stream from (overrides `selectCam`). |
+| `selectCam` | `"back" \| "front"` | `"back"` | Quickly force user-facing or environment camera without manual enumeration. |
+| `scan` | `"once" \| "flow"` | `"once"` | `"once"` stops after first scan; `"flow"` scans continuously. |
+| `scanIntervalMs` | `number` | `100` | Delay in milliseconds between WASM frame decoding cycles. |
+| `containerClassName` | `string` | `undefined` | CSS class name for the outer wrapper `<div>`. |
+| `containerCssStyle` | `CSSProperties` | `{}` | Inline styles for the outer wrapper `<div>`. |
+| `videoClassName` | `string` | `undefined` | CSS class name for the `<video>` element. |
+| `videoCssStyle` | `CSSProperties` | `{}` | Inline styles for the `<video>` element. |
+| `shutterClassName` | `string` | `undefined` | CSS class name for the target shutter box overlay. |
+| `shutterCssStyle` | `CSSProperties` | `{}` | Inline styles for the target shutter box overlay. |
+
+---
+
+## Utilities
+
+### `getCameras(): Promise<CameraDevice[]>`
+
+Enumerates available video input devices and returns an array of camera objects:
+
+```ts
+interface CameraDevice {
+  deviceId: string;
+  label: string;
+}
+```
+
+---
+
+## License
+
+MIT
