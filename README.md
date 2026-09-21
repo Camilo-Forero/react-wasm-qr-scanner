@@ -1,6 +1,6 @@
 # react-wasm-qr-scanner
 
-A lightweight, high-performance React QR code scanner library powered by [`zxing-wasm`](https://github.com/zxing-js/zxing-wasm). 
+A lightweight, high-performance React QR code scanner library powered by [`zxing-wasm`](https://github.com/Sec-ant/zxing-wasm). 
 
 Offers full UI flexibility by decoupling camera selection, enabling custom element styling, and providing both single-shot and continuous scanning modes.
 
