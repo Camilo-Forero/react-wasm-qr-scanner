@@ -125,7 +125,7 @@ To style each part you can use the props to pass your classes or pure CSS, the p
 
 ### 5. Choose Scan Working Flow
 
-The scanner can work in two ways, whe you use the prop `scan` you can choose between `once` or `flow`. By defualt is `once`
+The scanner can work in two ways, when you use the prop `scan` you can choose between `once` or `flow`. By default is `once`
 
 When you choose `once` the scanner is going to scan the first QR it found and if is a valid QR is going to stop.
 
