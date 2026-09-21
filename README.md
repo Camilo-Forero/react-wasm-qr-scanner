@@ -114,6 +114,7 @@ export default function CustomScannerApp() {
     </div>
   );
 }
+```
 
 ### 4. Custom CSS and Classes
 
@@ -134,6 +135,7 @@ To style each part you can use the props to pass your classes or pure CSS, the p
   shutterCssStyle={{ border: "3px solid #00E5FF", borderRadius: "24px" }}
 />
 ```
+
 #### Default CSS values
 | Part | CSS | Default |
 | :--- | :--- | :--- |
